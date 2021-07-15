@@ -1,0 +1,137 @@
+<mat-accordion>
+    <mat-expansion-panel class="mat-elevation-z8" [expanded]="true">
+        <mat-expansion-panel-header class="panel-header">
+            <mat-panel-title>
+                <div class="align-icon-title">
+                    <mat-icon style="margin-right: 10px;">warning</mat-icon><span>Últimos Alertas</span>
+                </div>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <form [formGroup]="" fxLayout="column">
+            <div class="container-min-height-110px">            
+                <div class="loading" *ngIf="true">
+                    <mat-spinner *ngIf="true" diameter="80"></mat-spinner>
+                </div>
+
+                <!--<div class="table-responsive" *ngIf="currentService.isLoading()===false">
+                    <mat-table mat-table [dataSource]="items" class="mat-elevation-z8" multiTemplateDataRows>
+                        
+                        <ng-container matColumnDef="row">
+                          <mat-header-cell *matHeaderCellDef fxFlex="47px"></mat-header-cell>
+                          <mat-cell *matCellDef="let row" fxFlex="47px"><mat-icon color="warn">warning</mat-icon></mat-cell>
+                        </ng-container>
+              
+                        <mat-radio-group aria-label="Select an option">
+                          
+                          <ng-container matColumnDef="grupo">
+                            <mat-header-cell *matHeaderCellDef  fxFlex="200px">
+                              <mat-checkbox labelPosition="before" [ngModel]="isChecked('nomeGrupo')"
+                              color="primary" (change)="changeGroup($event, 'nomeGrupo')">Grupo</mat-checkbox>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"  fxFlex="200px">{{row.nomeGrupo}}</mat-cell>
+                          </ng-container>
+              
+                          
+                          <ng-container matColumnDef="nomeRegra">
+                            <mat-header-cell *matHeaderCellDef>
+                              <mat-checkbox labelPosition="before" [ngModel]="isChecked('nomeRegra')"
+                              color="primary" (change)="changeGroup($event, 'nomeRegra')">Regra</mat-checkbox>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" >{{row.nomeRegra ? row.nomeRegra : "Sem Regra / Trap" }}</mat-cell>
+                          </ng-container>
+                          
+                          <ng-container matColumnDef="operacao">
+                            <mat-header-cell *matHeaderCellDef>
+                              <mat-checkbox labelPosition="before" [ngModel]="isChecked('operacao')"
+                              color="primary" (change)="changeGroup($event, 'operacao')">Operação</mat-checkbox>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row" [class.warn-color]="row.criticidade === 'Alta'">{{row.operacao}}</mat-cell>
+                          </ng-container>
+              
+                          
+                          <ng-container matColumnDef="sistema">
+                            <mat-header-cell *matHeaderCellDef>
+                              <mat-checkbox labelPosition="before" [ngModel]="isChecked('sistema')"
+                              labelPosition="before" color="primary" (change)="changeGroup($event, 'sistema')">Sistema</mat-checkbox>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.sistema ? row.sistema : setSistema(row)}}</mat-cell>
+                          </ng-container>
+              
+                        </mat-radio-group>
+                        
+                        <ng-container matColumnDef="ocorrencias">
+                          <mat-header-cell *matHeaderCellDef fxFlex="88px" fxLayoutAlign="end center">Ocorrências</mat-header-cell>
+                          <mat-cell *matCellDef="let row" fxFlex="88px">{{row.ocorrencias}}</mat-cell>
+                        </ng-container>
+              
+                        <mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]="'data-row'"></mat-header-row>
+              
+                        
+                        <ng-container matColumnDef="groupHeader">
+                          <mat-cell *matCellDef="let row" fxLayoutAlign="space-between center">
+                            <div fxLayoutAlign="center center">
+                              <mat-icon *ngIf="row.expanded">expand_less</mat-icon>
+                              <mat-icon *ngIf="!row.expanded">expand_more</mat-icon>
+                              <strong>{{row[groupByColumns[0]]}} ({{row.totalCounts}})</strong>
+                            </div>
+                            <button *ngIf="filterInfo.status === 'NOVO'" mat-stroked-button color="primary" (click)="openResolverForAll(row)">Resolver Todos</button>
+                          </mat-cell>
+                        </ng-container>
+              
+                        <mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup;" (click)="groupHeaderClick(row)"
+                        fxLayoutAlign="start center" [ngClass]="'header-group'"> </mat-row>
+              
+                        <mat-row *matRowDef="let row; columns: displayedColumns; when: isGroupDetails;"
+                            (click)="this.expandResolver(row)" [ngClass]="'data-row'">
+                        </mat-row>
+                        
+                        <ng-container matColumnDef="expandedDetail">
+                          <mat-cell *matCellDef="let element" [attr.colspan]="998">
+                            <div class="example-element-detail"
+                                [@detailExpand]="isExpandedElement(element) ? 'expanded' : 'collapsed'">
+              
+                                <mat-card [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
+                                  <mat-card-content>
+                                      <div fxLayout="column" fxLayoutAlign="start stretch"
+                                      fxLayoutGap="5px"
+                                      fxLayoutGap.xs="0"
+                                      fxFlex>
+                                      <div fxFlex>
+                                        {{element.mensagem}}
+                                      </div>
+                                      <div class="example-element-description-attribution">
+                                          {{element.arquivo}}
+                                      </div>
+                                      <mat-chip-list aria-label="Fish selection">
+                                        
+                                        <mat-chip>Status {{element.status}}</mat-chip>
+                                        <mat-chip>Ocorrências {{element.ocorrencias}}</mat-chip>
+                                      </mat-chip-list>
+                                    </div>
+                                  </mat-card-content>
+                                  <mat-card-actions>
+                                    <button mat-stroked-button color="primary" (click)="openResolver([element])">
+                                    {{ element.status === 'NOVO' ? 'Resolver' : 'Historico' }}
+                                    </button>
+                                    
+                                  </mat-card-actions>
+                                </mat-card>
+                            </div>
+                          </mat-cell>
+                        </ng-container>
+              
+                        <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isGroupDetails;"
+                        [class.show]="isExpandedElement(row)"
+                        [class.hide]="!isExpandedElement(row)"
+                        ></mat-row>
+              
+                      </mat-table>
+                </div>-->
+            </div>
+        </form>
+
+        <br/>
+
+    </mat-expansion-panel>
+</mat-accordion>

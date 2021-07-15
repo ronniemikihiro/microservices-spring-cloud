@@ -1,0 +1,39 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /api-user-data
+    
+spring:
+  application:
+    name: api-user-data
+  jpa:
+    show-sql: true
+    database-platform: '@spring.jpa.database-platform@'
+    hibernate:
+      use-new-id-generator-mappings: false
+      ddl-auto: update
+  datasource:
+    url: '@spring.datasource.url@'
+    username: '@spring.datasource.username@'
+    password: '@spring.datasource.password@'
+    driver-class-name: '@spring.datasource.driver-class-name@'
+    hikari:
+      minimumIdle: 5
+      maximumPoolSize: 20
+      idleTimeout: 30000
+      maxLifetime: 2000000
+      connectionTimeout: 30000
+      poolName: HikariPoolBooks
+
+swagger:
+  host: '@swagger.host@'
+
+eureka:
+  instance:
+    preferIpAddress: true
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    serviceUrl:
+      defaultZone: '@eureka.client.serviceUrl.defaultZone@'
+        
+        

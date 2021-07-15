@@ -1,0 +1,16 @@
+EUREKA (DISCOVERY)
+http://localhost:8081/discovery/
+
+SWAGGER API-USER
+http://localhost:8080/api-user/swagger-ui/
+
+SWAGGER API-USER-DATA
+http://localhost:8080/api-user-data/swagger-ui/
+
+WEB
+http://localhost:4200/
+
+Usuário: admin
+senha: teste
+
+

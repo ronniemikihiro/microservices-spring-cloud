@@ -1,0 +1,38 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%" fxFlex.md="60%" fxFlex.sm="50%" fxFlex.xs="95%" class="mat-elevation-z8">
+        <mat-card>
+            <mat-card-content>
+                <div fxFlex="50%" fxFlex.sm="95%" fxFlex.xs="950%">
+                    
+                    <form *ngIf="form" [formGroup]="form">
+                        <h2>{{!form.get('id').value ? 'Nova' : 'Editar'}} Permissão</h2>
+
+                        <mat-form-field class="full-width">
+                            <input id="nome" matInput placeholder="Nome" formControlName="nome" maxlength="100" required>
+                            <mat-error *ngIf="form.get('nome').hasError('required')">Nome é obrigatório</mat-error>
+                            <mat-icon matSuffix>pan_tool</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input id="codigo" matInput placeholder="Código" formControlName="codigo" maxlength="10" required>
+                            <mat-error *ngIf="form.get('codigo').hasError('required')">Código é obrigatório</mat-error>
+                            <mat-icon matSuffix>code</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input id="action" matInput placeholder="Action" formControlName="action" maxlength="300" required>
+                            <mat-error *ngIf="form.get('action').hasError('required')">Action é obrigatório</mat-error>
+                            <mat-icon matSuffix>accessibility</mat-icon>
+                        </mat-form-field>
+    
+                        <div class="text-right">
+                            <button type="button" mat-raised-button routerLink="/permissoes" matTooltip="Cancelar" style="margin-right: 10px;">Cancelar</button>
+                            <button type="button" mat-raised-button color="primary" (click)="salvar()" matTooltip="Salvar Permissão">Salvar</button>
+                        </div>
+                    </form>
+
+                </div>             
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>        

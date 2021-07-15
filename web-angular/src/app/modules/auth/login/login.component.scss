@@ -1,0 +1,99 @@
+.background-login-web {
+    background-image: url(../../../../assets/images/background-login-web.png);
+    height: 100vh;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    overflow: hidden;
+}
+
+.background-login-mobile {
+    background-image: url(../../../../assets/images/background-login-mobile.png);
+    height: 100vh;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    overflow: hidden;
+}
+
+.div-bem-vindo {
+    color: white;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 30px;
+}
+
+.div-login-web {
+    position: absolute;
+    width: 340px;
+    left: 8.2%;
+    top: 23%;
+}
+
+.div-login-mobile {
+    position: absolute;
+    width: 85%;
+    left: 8%;
+    top: 27%;
+}
+
+.div-actions {
+    background: transparent;
+    color: #FFFFFF;
+    box-shadow: none;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.button-entrar {
+    display: block;
+    width: 100%;
+}
+
+.div-checkbox-lembrar-mim {
+    position: absolute;
+    width: 100%;
+    font-weight: 100;
+    margin-top: 5px;
+}
+
+.div-esqueci-senha {
+    text-align: right;
+    width: 100%;
+}
+
+.link-esqueci-senha {
+    font-weight: 100; 
+    padding-right: 0;
+}
+
+.text-api-system-web {
+    position: absolute;
+    left: 65%;
+    top: 39%;
+    font-size: 3.8vw;
+    color: #FFFFFF;
+}
+
+.text-api-system-mobile {
+    position: absolute;
+    left: 18%;
+    top: 5%;
+    font-size: 11vw;
+    color: #FFFFFF;
+}
+
+.text-informacao {
+    position: absolute;
+    width: 30%;
+    left: 60%;
+    top: 55%;
+    font-size: 2vw;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+mat-checkbox ::ng-deep .mat-checkbox-inner-container {
+    background-color: #FFFFFF;
+    border-radius: 2px;
+}

@@ -1,0 +1,14 @@
+<h1 matDialogTitle>{{ titulo }}</h1>
+
+<mat-dialog-content [formGroup]="formGroup">
+    <mat-form-field class="full-width">
+      <textarea placeholder="Solução" formControlName="solucao" name="solucao"  ngDefaultControl matInput required></textarea>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions fxFlexAlign="space-between">
+    <button mat-raised-button color="primary" *ngIf="modoEditar" [disabled]="isDesabilitado()" (click)="salvar()">Salvar</button>
+    <span fxFlex></span>
+    <button mat-button color="warn" type="button" (click)="fecharDialog()" cdkFocusInitial>
+        {{ itemResolver.status === 'NOVO' ? 'Cancelar' : 'Fechar'}}
+    </button>
+</mat-dialog-actions>

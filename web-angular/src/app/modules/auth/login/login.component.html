@@ -1,0 +1,39 @@
+<div [ngClass]="mobileQuery.matches ? 'background-login-mobile' : 'background-login-web'">
+    <form [formGroup]="form" fxFlex="30%" fxFlex.sm="50%" fxFlex.xs="90%">
+        <div [ngClass]="mobileQuery.matches ? 'div-login-mobile' : 'div-login-web'">
+            <div class="div-bem-vindo">
+                Bem vindo!
+            </div>
+            <mat-card>
+                <mat-card-content>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Usuário" formControlName="username" required>
+                        <mat-icon matSuffix>person</mat-icon>
+                        <mat-error *ngIf="form.get('username').hasError('required')">Usuário é obrigatório</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Senha" formControlName="senha" [type]="mostrarSenha ? 'text' : 'password'" required>
+                        <mat-icon matSuffix (click)="mostrarSenha = !mostrarSenha">{{mostrarSenha ? 'visibility' : 'visibility_off'}}</mat-icon>    
+                        <mat-error *ngIf="form.get('senha').hasError('required')">Senha é obrigatório</mat-error>
+                    </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="div-actions">
+                <button mat-raised-button id="login" color="primary" class="button-entrar" (click)="login()">Entrar</button>
+                <div class="div-checkbox-lembrar-mim">
+                    <mat-checkbox formControlName="lembrarDeMim">Lembrar de mim</mat-checkbox>
+                </div>
+                <div class="div-esqueci-senha">
+                    <button type="button" mat-button [routerLink]="['/auth/redefinir-senha']" class="link-esqueci-senha">Esqueci minha senha</button>
+                </div>
+                <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>   
+            </mat-card>
+        </div>
+    </form>
+    <div [ngClass]="mobileQuery.matches ? 'text-api-system-mobile' : 'text-api-system-web'">
+        <strong>api</strong>system
+    </div>
+    <div class="text-informacao" *ngIf="!mobileQuery.matches">
+        Sua plataforma de API System
+    </div>
+</div>

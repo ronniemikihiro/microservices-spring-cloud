@@ -1,0 +1,50 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%" fxFlex.md="60%" fxFlex.sm="50%" fxFlex.xs="95%" class="mat-elevation-z8">
+        <mat-card>
+            <mat-card-content>
+                <div fxFlex="50%" fxFlex.sm="95%" fxFlex.xs="950%">
+                    
+                    <form *ngIf="form" [formGroup]="form">
+                        <h2>{{!form.get('id').value ? 'Nova' : 'Editar'}} Empresa</h2>
+                        
+                        <mat-form-field class="full-width">
+                            <input id="nome" matInput placeholder="Nome" formControlName="nome" required>
+                            <mat-error *ngIf="form.get('nome').hasError('required')">Nome é obrigatório</mat-error>
+                            <mat-icon matSuffix>account_balance</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input id="conta" matInput placeholder="Conta" formControlName="conta" required>
+                            <mat-error *ngIf="form.get('conta').hasError('required')">Conta é obrigatório</mat-error>
+                            <mat-icon matSuffix>keyboard</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input id="username" matInput placeholder="Username" formControlName="username" required>
+                            <mat-error *ngIf="form.get('username').hasError('required')">Username é obrigatório</mat-error>
+                            <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input id="password" matInput placeholder="Password" formControlName="password" required>
+                            <mat-error *ngIf="form.get('password').hasError('required')">Password é obrigatório</mat-error>
+                            <mat-icon matSuffix>lock</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input id="caixa" matInput placeholder="Caixa" formControlName="caixa" required>
+                            <mat-error *ngIf="form.get('caixa').hasError('required')">Caixa é obrigatório</mat-error>
+                            <mat-icon matSuffix>inbox</mat-icon>
+                        </mat-form-field>
+    
+                        <div class="text-right">
+                            <button type="button" mat-raised-button routerLink="/empresas" matTooltip="Cancelar" style="margin-right: 10px;">Cancelar</button>
+                            <button type="button" mat-raised-button color="primary" (click)="salvar()" matTooltip="Salvar Empresa">Salvar</button>
+                        </div>
+                    </form>
+
+                </div>             
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>        

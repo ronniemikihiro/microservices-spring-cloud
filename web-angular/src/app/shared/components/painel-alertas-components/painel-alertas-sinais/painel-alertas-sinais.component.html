@@ -1,0 +1,23 @@
+<mat-accordion>
+    <mat-expansion-panel class="mat-elevation-z8" [expanded]="true">
+        <mat-expansion-panel-header class="panel-header">
+            <mat-panel-title>
+                <div class="align-icon-title">
+                    <mat-icon style="margin-right: 10px;">leak_add</mat-icon><span>Sinais</span>
+                </div>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <form [formGroup]="" fxLayout="column">
+            <div class="container-min-height-110px">            
+                <div class="loading" *ngIf="true">
+                    <mat-spinner *ngIf="true" diameter="80"></mat-spinner>
+                </div>
+
+            </div>
+        </form>
+
+        <br/>
+
+    </mat-expansion-panel>
+</mat-accordion>

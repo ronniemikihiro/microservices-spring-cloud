@@ -1,0 +1,40 @@
+server:
+  port: 8080
+    
+spring:
+  application:
+    name: gateway
+  jpa:
+    show-sql: true
+    database-platform: '@spring.jpa.database-platform@'
+    hibernate:
+      use-new-id-generator-mappings: false
+      ddl-auto: update
+  datasource:
+    url: '@spring.datasource.url@'
+    username: '@spring.datasource.username@'
+    password: '@spring.datasource.password@'
+    driver-class-name: '@spring.datasource.driver-class-name@'
+    hikari:
+      minimumIdle: 5
+      maximumPoolSize: 20
+      idleTimeout: 30000
+      maxLifetime: 2000000
+      connectionTimeout: 30000
+      poolName: HikariPoolBooks
+  devtools:
+    remote:
+      secret: 123
+
+jwt:
+  secret: ronnie
+  expirationAccess: 60 #60 segundos
+  expirationRefresh: 3600 #3600 segundos (1 hora)
+
+eureka:
+  instance:
+    preferIpAddress: true
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    serviceUrl:
+      defaultZone: '@eureka.client.serviceUrl.defaultZone@'

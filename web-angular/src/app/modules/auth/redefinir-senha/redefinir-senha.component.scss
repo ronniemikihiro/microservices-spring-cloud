@@ -1,0 +1,50 @@
+.background-redefine-password-web {
+    background-image: url(../../../../assets/images/background-redefine-password-web.png);
+    height: 100vh;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    overflow: hidden;
+}
+
+.background-redefine-password-mobile {
+    background-image: url(../../../../assets/images/background-redefine-password-mobile.png);
+    height: 100vh;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    overflow: hidden;
+}
+
+.text-api-system-web {
+    position: absolute;
+    left: 2%;
+    top: 3%;
+    font-size: 3.3vw;
+    color: #FFFFFF;
+}
+
+.text-api-system-mobile {
+    position: absolute;
+    top: 3%;
+    width: 100%;
+    text-align: center;
+    font-size: 40px;
+    color: #FFFFFF;
+}
+
+.position-form-web {
+    position: absolute;
+    top: 25%;
+    left: 37%;
+    width: 340px;
+    color: #FFFFFF;
+}
+
+.position-form-mobile {
+    position: absolute;
+    top: 25%;
+    left: 5%;
+    width: 89%;
+    color: #FFFFFF;
+}

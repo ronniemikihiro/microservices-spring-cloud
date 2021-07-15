@@ -1,0 +1,55 @@
+1 - CONTAINERS
+	1.1 LISTAR: docker ps -a
+	1.2 REMOVER: docker rm <nome container>
+	1.3 IP ADDRESS: docker inspect <nome container>
+2 - IMAGES
+	2.1 LISTAR: docker images
+	2.2 REMOVER: docker rmi <nome image>
+
+3 - COMPOSE:
+	3.1 EXECUTAR: docker-compose up -d
+		• up: constrói as images e containers caso precise
+		• -d: flag de detached, roda em background sem tomar conta do terminal, com saída de informações nos containers
+4 - GERAL
+	4.2 LIMPAR VOLUMES: docker volume rm $(docker volume ls -qf dangling=true)
+	4.1 PARA REMOVER TODOS OS CONTAINERS, VOLUMES, REDES e IMAGENS NÃO UTILIZADOS: docker system prune -a -f --volumes
+	4.3 QUANTIDADE MEMORIA UTILIZADA: docker stats
+
+5 - REDE (NETWORK)
+	5.1 CRIAR REDE: docker network create --driver bridge mybridge
+	5.2 LISTAR REDES: docker network ls
+	5.3 REMOVER REDE: docker network rm <network id>
+	5.4 DESCONECTAR REDE: docker network disconnect <network id> <container id>
+	5.5 CONECTAR REDE: docker network connect <network id> <container id>
+
+
+
+cd discovery
+mvn clean package install -Pdev
+docker build -t discovery-image .
+docker run -p 8081:8081 --net mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --name discovery-container discovery-image
+docker run -d -p 8081:8081 --net mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --name discovery-container ronniemikihiro/discovery-image:1.0-SNAPSHOT
+
+cd api-user
+mvn clean package install -Pdev
+docker build -t api-user-image .
+docker run -p 8082 --net mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --link discovery-container --name api-user-container api-user-image
+docker run -d -p 8082 --net mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --name api-user-container ronniemikihiro/api-user-image:1.0-SNAPSHOT
+
+cd api-user-data
+mvn clean package install -Pdev
+docker build -t api-user-data-image .
+docker run -p 8083 --net mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --link discovery-container --name api-user-data-container api-user-data-image
+docker run -d -p 8083 --net mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --name api-user-data-container ronniemikihiro/api-user-data-image:1.0-SNAPSHOT
+
+cd gateway
+mvn clean package install -Pdev
+docker build -t gateway-image .
+docker run -p 8080:8080 --net mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --name gateway-container gateway-image
+docker run -p 8080:8080 --net mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --name gateway-container ronniemikihiro/gateway-image:1.0-SNAPSHOT
+docker run -d -p 8080:8080 --net mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --name gateway-container ronniemikihiro/gateway-image:1.0-SNAPSHOT
+
+cd web-angular
+docker build --build-arg PROFILE=docker -t web-angular-image .
+docker run -p 4200:80 --memory="128m" --memory-reservation="64m" --cpus="0.5" --name web-angular-container web-angular-image
+docker run -d -p 4200:80 --memory="128m" --memory-reservation="64m" --cpus="0.5" --name web-angular-container ronniemikihiro/web-angular-image:1.0-SNAPSHOT

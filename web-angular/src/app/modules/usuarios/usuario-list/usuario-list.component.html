@@ -1,0 +1,70 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%" class="mat-elevation-z8">
+        <mat-card>
+            <mat-card-content>
+                <div fxFlex="30%" fxFlex.sm="95%" fxFlex.xs="950%">
+                    <h2>Usuários</h2>
+
+                    <mat-form-field class="full-width" *ngIf="dataSource.data.length > 0">
+                        <input matInput placeholder="Filtro" [(ngModel)]="valorFiltro" (keyup)="filtrar()">
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+
+            <div class="full-width" style="text-align: right;">
+                <button mat-mini-fab color="primary" matTooltip="Listar Permissões" style="margin-right: 10px;" (click)="listarTodos()"
+                    [disabled]="dataSource.data.length > 0">
+                    <mat-icon>list</mat-icon>
+                </button>
+
+                <button mat-mini-fab color="primary" matTooltip="Novo Usuário" routerLink="/usuarios/form">
+                    <mat-icon>add_circle_outline</mat-icon>
+                </button>
+            </div>
+            
+            <div [hidden]="dataSource.data.length <= 0">
+                <div class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" matSort>
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="id">ID</th>
+                            <td mat-cell *matCellDef="let usuario"> {{ usuario.id }} </td>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="nome">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="nome">Nome</th>
+                            <td mat-cell *matCellDef="let usuario" >{{ usuario.nome }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="username">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="username">Username</th>
+                            <td mat-cell *matCellDef="let usuario" >{{ usuario.username }}</td>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="acoes">
+                            <th mat-header-cell *matHeaderCellDef>Ações</th>
+                            <td mat-cell *matCellDef="let usuario">
+                                <button mat-mini-fab color="primary" matTooltip="Editar" 
+                                        style="margin-right: 10px;" routerLink="/usuarios/form/{{ usuario.id }}">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-mini-fab color="warn" matTooltip="Deletar"
+                                    (click)="confirmarDialogDelete(usuario)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+        
+                        <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+                        <tr mat-row *matRowDef="let row; columns: colunas;"></tr>
+                    </table>
+                </div>
+            
+                <mat-paginator  [pageSize]="5" 
+                                [pageSizeOptions]="[5, 10, 20]"
+                                [showFirstLastButtons]="true">
+                </mat-paginator>
+            </div>
+
+        </mat-card>
+    </div>
+</div>

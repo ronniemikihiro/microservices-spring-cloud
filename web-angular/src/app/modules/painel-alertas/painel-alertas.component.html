@@ -1,0 +1,42 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%" class="mat-elevation-z8">
+        <mat-card>
+            <mat-card-content>
+                <div fxFlex="100%" fxFlex.sm="95%" fxFlex.xs="950%">
+                    <h2>Painel Alertas</h2>
+
+                    <app-painel-alertas-filtro 
+                                               [autoAtualizar]="false"
+                                               (emitterAlteracaoFiltro)="painelAlertasUltimosAlertas.alterarFiltro($event);
+                                                                         painelAlertasStatus.alterarFiltro($event);
+                                                                         painelAlertasSinais.alterarFiltro($event);">
+                    </app-painel-alertas-filtro>
+
+                    <br/>
+
+                    <app-painel-alertas-ultimos-alertas #painelAlertasUltimosAlertas>
+
+                    </app-painel-alertas-ultimos-alertas>
+
+                    <br/>
+                    
+                    <app-painel-alertas-monitor-servidores>
+
+                    </app-painel-alertas-monitor-servidores>
+
+                    <br/>
+
+                    <app-painel-alertas-status #painelAlertasStatus>
+
+                    </app-painel-alertas-status>
+
+                    <br/>
+
+                    <app-painel-alertas-sinais #painelAlertasSinais>
+
+                    </app-painel-alertas-sinais>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

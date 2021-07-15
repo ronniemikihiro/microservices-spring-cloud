@@ -1,0 +1,40 @@
+<mat-accordion>
+    <mat-expansion-panel class="mat-elevation-z8" [expanded]="true">
+        <mat-expansion-panel-header class="panel-header">
+            <mat-panel-title>
+                <div class="align-icon-title">
+                    <mat-icon style="margin-right: 10px;">search</mat-icon><span>Filtro</span>
+                </div>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <form [formGroup]="formFiltro" fxLayout="column" (ngSubmit)="submit()">
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px" [style.margin-left]="'20px'" [style.margin-right]="'20px'">            
+                <mat-form-field>
+                    <mat-select placeholder="Status" formControlName="status" required>
+                        <mat-option *ngFor="let status of listStatus" [value]="status">{{status}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Dias</mat-label>
+                    <mat-select placeholder="Dias" formControlName="dias" required>
+                        <mat-option *ngFor="let dias of listDias" [value]="dias">{{dias}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Tempo para atualização (minutos)</mat-label>
+                    <input type="number" matInput formControlName="minutosParaAtualizar" required min="1" max="99"
+                           onkeyup="if(this.value<1) this.value='1';"
+                           onKeyPress="if(this.value.length==2) return false;"
+                           pattern="/^-?\d+\.?\d*$/">
+                    <mat-hint>Atualização em {{minutos}} min {{segundos}} seg</mat-hint>
+                </mat-form-field>
+            </div>
+        </form>
+
+        <br/>
+
+    </mat-expansion-panel>
+</mat-accordion>

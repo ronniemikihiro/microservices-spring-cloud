@@ -1,0 +1,22 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /discovery
+    
+spring:
+  application:
+    name: discovery
+  devtools:
+    remote:
+      secret: 123
+    
+eureka:
+  instance:
+    preferIpAddress: true
+  server:
+    renewalPercentThreshold: 0.49
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/

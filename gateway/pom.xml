@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>br.com</groupId>
+        <artifactId>parent</artifactId>
+        <relativePath>../parent/pom.xml</relativePath>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <start-class>br.com.gateway.GatewayApplication</start-class>
+    </properties>
+
+    <artifactId>gateway</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>gateway</name>
+    <description>Aplicação Cloud Gateway</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>br.com</groupId>
+            <artifactId>domain</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludeDevtools>false</excludeDevtools>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+<!--                <spring.datasource.driver-class-name>oracle.jdbc.OracleDriver</spring.datasource.driver-class-name>-->
+<!--                <spring.jpa.database-platform>org.hibernate.dialect.Oracle12cDialect</spring.jpa.database-platform>-->
+<!--                <spring.datasource.url>jdbc:oracle:thin:@//localhost:1521/ORCLCDB.localdomain</spring.datasource.url>-->
+<!--                <spring.datasource.username>ronnie</spring.datasource.username>-->
+<!--                <spring.datasource.password>123456</spring.datasource.password>-->
+                <spring.datasource.driver-class-name>org.postgresql.Driver</spring.datasource.driver-class-name>
+                <spring.jpa.database-platform>org.hibernate.dialect.PostgreSQL9Dialect</spring.jpa.database-platform>
+                <spring.datasource.url>jdbc:postgresql://localhost:5432/microservices</spring.datasource.url>
+                <spring.datasource.username>postgres</spring.datasource.username>
+                <spring.datasource.password>postgresql1020</spring.datasource.password>
+                <swagger.host>http://localhost:8080</swagger.host>
+                <eureka.client.serviceUrl.defaultZone>http://localhost:8081/discovery/eureka/</eureka.client.serviceUrl.defaultZone>
+            </properties>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+<!--                <spring.datasource.driver-class-name>oracle.jdbc.OracleDriver</spring.datasource.driver-class-name>-->
+<!--                <spring.jpa.database-platform>org.hibernate.dialect.Oracle12cDialect</spring.jpa.database-platform>-->
+<!--                <spring.datasource.url>jdbc:oracle:thin:@//oracle-container:1521/ORCLCDB.localdomain</spring.datasource.url>-->
+<!--                <spring.datasource.username>ronnie</spring.datasource.username>-->
+<!--                <spring.datasource.password>123456</spring.datasource.password>-->
+                <spring.datasource.driver-class-name>org.postgresql.Driver</spring.datasource.driver-class-name>
+                <spring.jpa.database-platform>org.hibernate.dialect.PostgreSQL9Dialect</spring.jpa.database-platform>
+                <spring.datasource.url>jdbc:postgresql://postgres-container:5432/microservices</spring.datasource.url>
+                <spring.datasource.username>postgres</spring.datasource.username>
+                <spring.datasource.password>postgresql1020</spring.datasource.password>
+                <swagger.host>http://10.222.31.188:8080</swagger.host>
+                <eureka.client.serviceUrl.defaultZone>http://discovery-container:8081/discovery/eureka</eureka.client.serviceUrl.defaultZone>
+            </properties>
+        </profile>
+    </profiles>
+
+</project>

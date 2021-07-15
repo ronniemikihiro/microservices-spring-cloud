@@ -1,0 +1,207 @@
+<div class="navbar-container" [class.example-is-mobile]="mobileQuery.matches">
+
+  <!-- Top navbar -->
+  <mat-toolbar class="navbar" color="primary">
+    <button mat-icon-button (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <a class="navbar-brand" [routerLink]="['/']" matTooltip="Home">
+      <img src="../../../assets/images/icon.png" />
+      <span style="font-weight: normal;"><strong> api</strong>system</span>
+    </a>
+
+    <span class="navbar-spacer"></span>
+
+    <button mat-icon-button [matMenuTriggerFor]="notificationMenu">
+      <mat-icon matBadge="2" matBadgeColor="accent">notifications</mat-icon>
+    </button>
+    <mat-menu #notificationMenu="matMenu" xPosition="before" yPosition="above" [overlapTrigger]="false">
+      <a mat-menu-item>
+        <span>Você tem novas tarefas</span>
+      </a>
+      <a mat-menu-item>
+        <span>Você tem uma nova mensagem</span>
+      </a>
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>person</mat-icon><span fxShow fxHide.xs>{{userName}}</span>
+    </button>
+
+    <mat-menu #userMenu="matMenu" xPosition="before" yPosition="above" [overlapTrigger]="false">
+      <a mat-menu-item (click)="deslogar()">
+        <mat-icon>exit_to_app</mat-icon><span>Deslogar</span>
+      </a>
+    </mat-menu>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="navbar-sidenav-container">
+    <!-- Side nav -->
+    <mat-sidenav #snav [opened]="!mobileQuery.matches" [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" class="sidenav">
+
+      <mat-nav-list class="padding-mat-nav-list-menu">
+        <a mat-list-item [routerLink]="['/home']" routerLinkActive="active">
+          <mat-icon mat-list-icon>home</mat-icon><p mat-line> Home </p>
+        </a>
+      </mat-nav-list>
+
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="align-icon-title">
+                <mat-icon style="margin-right: 10px;">network_check</mat-icon><span>Monitoramento</span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list class="padding-mat-nav-list-sub-menu">
+            <a mat-list-item [routerLink]="['/']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Transferências em andamento </p>
+            </a>
+
+            <a mat-list-item [routerLink]="['/']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Transferências com erros </p>
+            </a>
+
+            <a mat-list-item [routerLink]="['/']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Logs de envio </p>
+            </a>
+
+            <a mat-list-item [routerLink]="['/']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Logs de recepção </p>
+            </a>
+
+            <a mat-list-item [routerLink]="['/']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Logs de ftp </p>
+            </a>
+
+            <a mat-list-item [routerLink]="['/']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Logs de auditoria </p>
+            </a>
+
+            <a mat-list-item [routerLink]="['/']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Logs do servidor </p>
+            </a>
+
+            <a mat-list-item [routerLink]="['/']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Logs do banco de dados </p>
+            </a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="align-icon-title">
+                <mat-icon style="margin-right: 10px;">edit</mat-icon><span>Cadastros</span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list class="padding-mat-nav-list-sub-menu">
+            <a mat-list-item [routerLink]="['/empresas']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Empresas </p>
+            </a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="align-icon-title">
+                <mat-icon style="margin-right: 10px;">bubble_chart</mat-icon><span>Operações</span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list class="padding-mat-nav-list-sub-menu">
+            <a mat-list-item [routerLink]="['/home']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Home </p>
+            </a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+        
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="align-icon-title">
+                <mat-icon style="margin-right: 10px;">cast</mat-icon><span>Painéis</span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list class="padding-mat-nav-list-sub-menu">
+            <a mat-list-item [routerLink]="['/painel-alertas']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Painel Alertas </p>
+            </a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="align-icon-title">
+                <mat-icon style="margin-right: 10px;">show_chart</mat-icon><span>Relatórios</span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list class="padding-mat-nav-list-sub-menu">
+            <a mat-list-item [routerLink]="['/home']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Home </p>
+            </a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="align-icon-title">
+                <mat-icon style="margin-right: 10px;">settings</mat-icon><span>Configurações</span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list class="padding-mat-nav-list-sub-menu">
+            <a mat-list-item [routerLink]="['/home']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Home </p>
+            </a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="align-icon-title">
+                <mat-icon style="margin-right: 10px;">security</mat-icon><span>Segurança</span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list class="padding-mat-nav-list-sub-menu">
+            <a mat-list-item [routerLink]="['/usuarios']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Usuários </p>
+            </a>
+
+            <a mat-list-item [routerLink]="['/perfis']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Perfis </p>
+            </a>
+
+            <a mat-list-item [routerLink]="['/permissoes']" routerLinkActive="active">
+              <mat-icon mat-list-icon></mat-icon><p mat-line> Permissões </p>
+            </a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+
+      </mat-accordion>
+
+    </mat-sidenav>
+
+    <!-- Main content -->
+    <mat-sidenav-content class="sidenav-content">
+      <div class="progress-bar-container">
+        <mat-progress-bar color="accent" mode="indeterminate" *ngIf="view() | async"></mat-progress-bar>
+        <!--<mat-spinner class="spinner" [diameter]="50" *ngIf="spinnerService.visibility | async"></mat-spinner>-->
+      </div>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+
+</div>

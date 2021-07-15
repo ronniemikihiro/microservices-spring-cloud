@@ -1,0 +1,133 @@
+version: "3.9"
+services:
+
+  discovery:
+    build: "./discovery"
+    image: "discovery-image"
+    container_name: "discovery-container"
+    restart: always
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./discovery:/home/app
+    cpus: 0.5
+    mem_limit: 512m
+    mem_reservation: 128m
+    networks:
+      - mybridge
+
+  api-user:
+    build: "./api-user"
+    image: "api-user-image"
+    container_name: "api-user-container"
+    restart: always
+    ports:
+      - "8082"
+    volumes:
+      - ./api-user:/home/app
+    depends_on:
+      - discovery
+    cpus: 0.5
+    mem_limit: 512m
+    mem_reservation: 128m
+    networks:
+      - mybridge
+
+  api-user-2:
+    build: "./api-user"
+    image: "api-user-image"
+    container_name: "api-user-container-2"
+    restart: always
+    ports:
+      - "8082"
+    volumes:
+      - ./api-user:/home/app
+    depends_on:
+      - discovery
+    cpus: 0.5
+    mem_limit: 512m
+    mem_reservation: 128m
+    networks:
+      - mybridge
+
+  api-user-data:
+    build: "./api-user-data"
+    image: "api-user-data-image"
+    container_name: "api-user-data-container"
+    restart: always
+    ports:
+      - "8083"
+    volumes:
+      - ./api-user-data:/home/app
+    depends_on:
+      - discovery
+    cpus: 0.5
+    mem_limit: 512m
+    mem_reservation: 128m
+    networks:
+      - mybridge
+
+  api-user-data-2:
+    build: "./api-user-data"
+    image: "api-user-data-image"
+    container_name: "api-user-data-container-2"
+    restart: always
+    ports:
+      - "8083"
+    volumes:
+      - ./api-user-data:/home/app
+    depends_on:
+      - discovery
+    cpus: 0.5
+    mem_limit: 512m
+    mem_reservation: 128m
+    networks:
+      - mybridge
+
+  gateway:
+    build: "./gateway"
+    image: "gateway-image"
+    container_name: "gateway-container"
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./gateway:/home/app
+    depends_on:
+      - discovery
+      - api-user
+      - api-user-2
+      - api-user-data
+      - api-user-data-2
+    cpus: 0.5
+    mem_limit: 512m
+    mem_reservation: 128m
+    networks:
+      - mybridge
+
+  web-angular:
+    build:
+      context: "web-angular"
+      args:
+        PROFILE: docker
+    image: "web-angular-image"
+    container_name: "web-angular-container"
+    restart: always
+    ports:
+    - "4200:80"
+    volumes:
+    - './web-angular:/app'
+    depends_on:
+      - gateway
+    cpus: 0.5
+    mem_limit: 128m
+    mem_reservation: 64m
+    networks:
+      - mybridge
+
+networks:
+  mybridge:
+    driver: bridge
+
+
+

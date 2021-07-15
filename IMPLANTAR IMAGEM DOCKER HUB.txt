@@ -1,0 +1,164 @@
+REMOVER:
+
+docker stop web-angular-container
+docker rm web-angular-container
+docker rmi ronniemikihiro/web-angular-image:1.0-SNAPSHOT
+
+docker stop discovery-container
+docker rm discovery-container
+docker rmi ronniemikihiro/discovery-image:1.0-SNAPSHOT
+
+docker stop api-user-container
+docker rm api-user-container
+docker stop api-user-container-2
+docker rm api-user-container-2
+docker rmi ronniemikihiro/api-user-image:1.0-SNAPSHOT
+
+docker stop api-user-data-container
+docker rm api-user-data-container
+docker stop api-user-data-container-2
+docker rm api-user-data-container-2
+docker rmi ronniemikihiro/api-user-data-image:1.0-SNAPSHOT
+
+docker stop gateway-container
+docker rm gateway-container
+docker rmi ronniemikihiro/gateway-image:1.0-SNAPSHOT
+
+
+No terminal:
+
+========== DISCOVERY ==========
+
+1 - docker login
+
+docker build -t discovery-image .
+
+2 - TAGS:
+	2.1 LATEST - docker tag discovery-image ronniemikihiro/discovery-image
+	2.2 VERSION - docker tag discovery-image ronniemikihiro/discovery-image:1.0-SNAPSHOT
+	2.3 VIEW TAGS - docker images | grep discovery-image
+	2.4 DELETE TAG - docker rmi ronniemikihiro/discovery-image:1.0-SNAPSHOT
+
+3 - PUSH
+	3.1 LATEST - docker push ronniemikihiro/discovery-image
+	3.2 VERSION - docker push ronniemikihiro/discovery-image:1.0-SNAPSHOT
+
+
+4 - PULL
+	3.1 LATEST - docker pull ronniemikihiro/discovery-image
+	3.2 VERSION - docker pull ronniemikihiro/discovery-image:1.0-SNAPSHOT
+
+5 - IMPLANTAR
+	5.1 VERSION - docker run -d -p 8081:8081 --net enterprise_mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --name discovery-container ronniemikihiro/discovery-image:1.0-SNAPSHOT
+
+
+
+
+
+========== API-USER ==========
+
+1 - docker login
+
+docker build -t api-user-image .
+
+2 - TAGS:
+	2.1 LATEST - docker tag api-user-image ronniemikihiro/api-user-image
+	2.2 VERSION - docker tag api-user-image ronniemikihiro/api-user-image:1.0-SNAPSHOT
+	2.3 VIEW TAGS - docker images | grep api-user-image
+	2.4 DELETE TAG - docker rmi ronniemikihiro/api-user-image:1.0-SNAPSHOT
+
+3 - PUSH
+	3.1 LATEST - docker push ronniemikihiro/api-user-image
+	3.2 VERSION - docker push ronniemikihiro/api-user-image:1.0-SNAPSHOT
+
+
+4 - PULL
+	3.1 LATEST - docker pull ronniemikihiro/api-user-image
+	3.2 VERSION - docker pull ronniemikihiro/api-user-image:1.0-SNAPSHOT
+
+5 - IMPLANTAR
+	5.1 VERSION - docker run -d -p 8082 --net enterprise_mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --name api-user-container ronniemikihiro/api-user-image:1.0-SNAPSHOT
+
+
+
+
+
+========== API-USER-DATA ==========
+
+1 - docker login
+
+docker build -t api-user-data-image .
+
+2 - TAGS:
+	2.1 LATEST - docker tag api-user-data-image ronniemikihiro/api-user-data-image
+	2.2 VERSION - docker tag api-user-data-image ronniemikihiro/api-user-data-image:1.0-SNAPSHOT
+	2.3 VIEW TAGS - docker images | grep api-user-data-image
+	2.4 DELETE TAG - docker rmi ronniemikihiro/api-user-data-image:1.0-SNAPSHOT
+
+3 - PUSH
+	3.1 LATEST - docker push ronniemikihiro/api-user-data-image
+	3.2 VERSION - docker push ronniemikihiro/api-user-data-image:1.0-SNAPSHOT
+
+
+4 - PULL
+	3.1 LATEST - docker pull ronniemikihiro/api-user-data-image
+	3.2 VERSION - docker pull ronniemikihiro/api-user-data-image:1.0-SNAPSHOT
+
+5 - IMPLANTAR
+	5.1 VERSION - docker run -d -p 8083 --net enterprise_mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --name api-user-data-container ronniemikihiro/api-user-data-image:1.0-SNAPSHOT
+
+
+========== GATEWAY ==========
+
+1 - docker login
+
+docker build -t gateway-image .
+
+2 - TAGS:
+	2.1 LATEST - docker tag gateway-image ronniemikihiro/gateway-image
+	2.2 VERSION - docker tag gateway-image ronniemikihiro/gateway-image:1.0-SNAPSHOT
+	2.3 VIEW TAGS - docker images | grep gateway-image
+	2.4 DELETE TAG - docker rmi ronniemikihiro/gateway-image:1.0-SNAPSHOT
+
+3 - PUSH
+	3.1 LATEST - docker push ronniemikihiro/gateway-image
+	3.2 VERSION - docker push ronniemikihiro/gateway-image:1.0-SNAPSHOT
+
+
+4 - PULL
+	3.1 LATEST - docker pull ronniemikihiro/gateway-image
+	3.2 VERSION - docker pull ronniemikihiro/gateway-image:1.0-SNAPSHOT
+
+5 - IMPLANTAR
+	5.1 VERSION - docker run -d -p 8080:8080 --net enterprise_mybridge --memory="512m" --memory-reservation="128m" --cpus="0.5" --name gateway-container ronniemikihiro/gateway-image:1.0-SNAPSHOT
+
+
+
+
+
+
+========== WEB-ANGULAR ==========
+
+1 - docker login
+
+docker build --build-arg PROFILE=docker -t web-angular-image .
+
+2 - TAGS:
+	2.1 LATEST - docker tag web-image ronniemikihiro/web-angular-image
+	2.2 VERSION - docker tag web-image ronniemikihiro/web-angular-image:1.0-SNAPSHOT
+	2.3 VIEW TAGS - docker images | grep web-angular-image
+	2.4 DELETE TAG - docker rmi ronniemikihiro/web-angular-image:1.0-SNAPSHOT
+
+3 - PUSH
+	3.1 LATEST - docker push ronniemikihiro/web-angular-image
+	3.2 VERSION - docker push ronniemikihiro/web-angular-image:1.0-SNAPSHOT
+
+
+4 - PULL
+	3.1 LATEST - docker pull ronniemikihiro/web-angular-image
+	3.2 VERSION - docker pull ronniemikihiro/web-angular-image:1.0-SNAPSHOT
+
+5 - IMPLANTAR
+	5.1 VERSION - docker run -d -p 4200:80 --memory="128m" --memory-reservation="64m" --cpus="0.5" --name web-container ronniemikihiro/web-angular-image:1.0-SNAPSHOT
+
+

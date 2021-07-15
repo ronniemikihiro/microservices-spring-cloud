@@ -1,0 +1,69 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%" fxFlex.md="60%" fxFlex.sm="50%" fxFlex.xs="95%" class="mat-elevation-z8">
+        <mat-card>
+            <mat-card-content>
+                <div fxFlex="50%" fxFlex.sm="95%" fxFlex.xs="950%">
+                    
+                    <form *ngIf="form" [formGroup]="form">
+                        <h2>{{!form.get('id').value ? 'Novo' : 'Editar'}} Usuário</h2>
+                        
+                        <mat-form-field class="full-width">
+                            <input id="nome" matInput placeholder="Nome" formControlName="nome" required>
+                            <mat-error *ngIf="form.get('nome').hasError('required')">Nome é obrigatório</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input id="username" matInput placeholder="Username" formControlName="username" required>
+                            <mat-error *ngIf="form.get('username').hasError('required')">Username é obrigatório</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input id="senha" matInput placeholder="Senha" formControlName="senha" required [type]="'password'">
+                            <mat-error *ngIf="form.get('senha').hasError('required')">Senha é obrigatório</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input id="setor" matInput placeholder="Setor" formControlName="setor">
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input id="cargo" matInput placeholder="Cargo" formControlName="cargo" required>
+                            <mat-error *ngIf="form.get('cargo').hasError('required')">Cargo é obrigatório</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input id="dominio" matInput placeholder="Domínio" formControlName="dominio">
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <mat-select id="tipoAutenticacao" placeholder="Tipo Autenticação" formControlName="tipoAutenticacao" required>
+                                <mat-select-filter [placeholder]="'Filtro'" [noResultsMessage]="'Nenhum resultado'" [array]="bean.tipoAutenticacoes" (filteredReturn)="bean.tipoAutenticacoesFiltered=$event"></mat-select-filter>
+                                <mat-option *ngFor="let tipoAutenticacao of bean.tipoAutenticacoesFiltered" [value]="tipoAutenticacao">{{tipoAutenticacao}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <mat-select id="empresa" placeholder="Empresa" formControlName="empresa" [compareWith]="compararIdsObjetos" required>
+                                <mat-select-filter [placeholder]="'Filtro'" [displayMember]="'nome'" [noResultsMessage]="'Nenhum resultado'" [array]="bean.empresas" (filteredReturn)="bean.empresasFiltered=$event"></mat-select-filter>
+                                <mat-option *ngFor="let empresa of bean.empresasFiltered" [value]="empresa">{{empresa.nome}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <mat-select id="perfil" placeholder="Perfil" formControlName="perfil" [compareWith]="compararIdsObjetos" required>
+                                <mat-select-filter [placeholder]="'Filtro'" [displayMember]="'nome'" [noResultsMessage]="'Nenhum resultado'" [array]="bean.perfis" (filteredReturn)="bean.perfisFiltered=$event"></mat-select-filter>
+                                <mat-option *ngFor="let perfil of bean.perfisFiltered" [value]="perfil">{{perfil.nome}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+    
+                        <div class="text-right">
+                            <button type="button" mat-raised-button routerLink="/usuarios" matTooltip="Cancelar" style="margin-right: 10px;">Cancelar</button>
+                            <button type="button" mat-raised-button color="primary" (click)="salvar()" matTooltip="Salvar Usuário">Salvar</button>
+                        </div>
+                    </form>
+
+                </div>             
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>        

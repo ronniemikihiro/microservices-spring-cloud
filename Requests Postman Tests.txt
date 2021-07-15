@@ -1,0 +1,26 @@
+### REQUESTS POSTMAN TESTS ###
+
+• CREATE TOKEN
+URL DIRECT: http://localhost:8080/auth/token
+URL CLOUD GATEWAY: http://localhost:8080/auth/token
+Body: x-www-form-urlencoded / username: admin / password: teste
+
+• REFRESH TOKEN
+URL DIRECT: http://localhost:8080/auth/refreshToken
+URL CLOUD GATEWAY: http://localhost:8080/auth/refreshToken
+Body: x-www-form-urlencoded / refresh_token: (refresh_token gerado no CREATE TOKEN)
+
+• CONSULT USER
+URL DIRECT: http://localhost:8082/api-user/***
+URL CLOUD GATEWAY: http://localhost:8080/api-user/***
+Authorization: Bearer Token / Token: (acces_token gerado no CREATE TOKEN OU REFRESH TOKEN)
+
+• CONSULT USER-DATA
+URL DIRECT: http://localhost:8083/api-user-data/***
+URL GATEWAY ZUUL: http://localhost:8080/api-user-data/***
+Authorization: Bearer Token / Token: (acces_token gerado no CREATE TOKEN OU REFRESH TOKEN)
+
+
+• DISCOVERY
+URL SPRING EUREKA: http://localhost:8081/discovery
+

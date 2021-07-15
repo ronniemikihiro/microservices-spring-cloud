@@ -1,0 +1,42 @@
+<div [ngClass]="mobileQuery.matches ? 'background-redefine-password-mobile' : 'background-redefine-password-web'">
+    <form [formGroup]="form" fxFlex="30%" fxFlex.sm="50%" fxFlex.xs="90%">
+        <div [ngClass]="mobileQuery.matches ? 'text-api-system-mobile' : 'text-edi-api-system-web'">
+            <strong>api</strong>system
+        </div>
+        <div *ngIf="!mostarInfoEnvioEmail" [ngClass]="mobileQuery.matches ? 'position-form-mobile' : 'position-form-web'">
+            <div>
+                <span style="font-size: 35px;">Redefinição de senha</span><br/><br/>
+                <span style="font-size: 12px;">Enviaremos um email com instruções de como<br/>
+                redefinir sua senha.</span>
+            </div>
+            <br/>
+            <mat-card>
+                <mat-card-content>
+                    <mat-form-field class="full-width">
+                        <input id="email" matInput placeholder="Email" formControlName="email" type="email" required>
+                        <mat-icon matSuffix>email</mat-icon>
+                        <mat-error *ngIf="form.get('email').hasError('email')">Email inválido</mat-error>
+                        <mat-error *ngIf="form.get('email').hasError('required')">Email é obrigatório</mat-error>
+                    </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+            <br/>
+            <div class="text-right">
+                <button type="button" mat-raised-button routerLink="/auth/login" matTooltip="Clique para cancelar" style="margin-right: 10px;">Cancelar</button>
+                <button type="button" mat-raised-button color="primary" matTooltip="Clique para enviar email" (click)="enviarEmail()">Enviar</button>
+            </div>
+        </div>
+        <div *ngIf="mostarInfoEnvioEmail" [ngClass]="mobileQuery.matches ? 'position-form-mobile' : 'position-form-web'">
+            <span style="font-size: 30px;"><strong>Email enviado!</strong></span><br/><br/>
+            <span style="font-weight: 100;">Enviamos um email com instruções de como redefinir sua senha para <strong>{{ form.get('email').value }}.</strong></span><br/><br/>
+            <span style="font-weight: 100;">Se você não encontrar o email na sua caixa de entrada, verifique a lixeira ou a pasta de spam. Se você não tem
+                mais acesso a esse endereço de email, entre em contato com o administrador do sistema.
+            </span>
+            <br/><br/>
+            <div class="text-right">
+                <button type="button" mat-raised-button routerLink="/auth/login" matTooltip="Clique para voltar" style="margin-right: 10px;">Voltar</button>
+            </div>
+        </div>
+    </form> 
+
+</div>
