@@ -22,7 +22,7 @@ public class UsuarioQueryImpl extends GenericoQueryImpl<UsuarioDTO> implements U
         params.addValue("username", username.trim());
 
         try {
-            return (UsuarioDTO) namedParameterJdbcTemplate.queryForObject(sql.toString(), params, getDTO().getRowMapper());
+            return (UsuarioDTO) namedParameterJdbcTemplate.queryForObject(sql.toString(), params, getRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -47,7 +47,7 @@ public class UsuarioQueryImpl extends GenericoQueryImpl<UsuarioDTO> implements U
 
         final Long count = namedParameterJdbcTemplate.queryForObject(sqlCount.toString(), params, Long.class);
 
-        return new PageImpl<>(namedParameterJdbcTemplate.query(sqlSearch.toString(), params, getDTO().getRowMapper()), pageable, count);
+        return new PageImpl<>(namedParameterJdbcTemplate.query(sqlSearch.toString(), params, getRowMapper()), pageable, count);
     }
 
 }

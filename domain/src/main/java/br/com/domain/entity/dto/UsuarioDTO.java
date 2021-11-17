@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 @Builder
-public class UsuarioDTO extends DTO<Usuario, UsuarioDTO> {
+public class UsuarioDTO extends DTO<Usuario> {
 
     private Long id;
     private String nome;

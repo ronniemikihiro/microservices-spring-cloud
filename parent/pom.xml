@@ -5,20 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <java.version>11</java.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <spring-boot-dependencies.version>2.5.2</spring-boot-dependencies.version>
-        <spring-cloud.version>2020.0.3</spring-cloud.version>
+        <spring-boot-dependencies.version>2.5.5</spring-boot-dependencies.version>
+        <spring-cloud.version>2020.0.4</spring-cloud.version>
 
         <spring-cloud-starter-netflix-hystrix.version>2.2.8.RELEASE</spring-cloud-starter-netflix-hystrix.version>
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
 
-        <ojdbc10.version>19.8.0.0</ojdbc10.version>
-        <jackson-annotations.version>2.12.0</jackson-annotations.version>
-        <jsonwebtoken.version>0.11.1</jsonwebtoken.version>
+        <ojdbc10.version>19.12.0.0</ojdbc10.version>
+        <jackson-annotations.version>2.12.5</jackson-annotations.version>
+        <jsonwebtoken.version>0.11.2</jsonwebtoken.version>
     </properties>
 
     <groupId>br.com</groupId>
@@ -33,6 +33,12 @@
             <dependency>
                 <groupId>br.com</groupId>
                 <artifactId>domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>br.com</groupId>
+                <artifactId>commons-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -58,12 +64,11 @@
                 <version>${springfox-boot-starter.version}</version>
             </dependency>
 
-            <!-- oracle -->
-<!--            <dependency>-->
-<!--                <groupId>com.oracle.database.jdbc</groupId>-->
-<!--                <artifactId>ojdbc10</artifactId>-->
-<!--                <version>${ojdbc10.version}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+                <version>${spring-cloud-starter-netflix-hystrix.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -90,27 +95,21 @@
                 <version>${jsonwebtoken.version}</version>
                 <scope>runtime</scope>
             </dependency>
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-                <version>${spring-cloud-starter-netflix-hystrix.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
-<!--    <distributionManagement>-->
-<!--        <snapshotRepository>-->
-<!--            <id>snapshots</id>-->
-<!--            <name>repo-snapshots</name>-->
-<!--            <url>http://nexus.com.br:8080/nexus/content/repositories/snapshots/</url>-->
-<!--        </snapshotRepository>-->
-<!--        <repository>-->
-<!--            <id>releases</id>-->
-<!--            <name>repo-releases</name>-->
-<!--            <url>http://nexus.com.br:8080/nexus/content/repositories/releases/</url>-->
-<!--        </repository>-->
-<!--    </distributionManagement>-->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>repo-snapshots</name>
+            <url>http://nexus.esales.com.br:8080/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>releases</id>
+            <name>repo-releases</name>
+            <url>http://nexus.esales.com.br:8080/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <pluginManagement>

@@ -1,13 +1,13 @@
 package br.com.gateway.config;
 
 import br.com.domain.entity.dto.UsuarioDTO;
-import br.com.gateway.exception.InvalidTokenException;
-import br.com.gateway.exception.IsInvalidTypeTokenException;
+import br.com.domain.exception.errors.ErrorException;
+import br.com.domain.util.Constantes;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -25,11 +25,6 @@ public class JwtUtil {
         ACCESS, REFRESH;
     }
 
-    public static final String ID_USUARIO = "id_usuario";
-    public static final String USERNAME = "username";
-    public static final String ID_PERFIL = "id_perfil";
-    public static final String TYPE_TOKEN = "type_token";
-
     @Value("${jwt.expirationAccess}")
     private String expirationAccess;
 
@@ -43,58 +38,52 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded());
     }
 
-    public Claims getAllClaimsFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-    }
-
-    public void isValidAccessToken(String token) throws InvalidTokenException {
+    public void isValidAccessToken(String token) throws ErrorException {
         isValidToken(token, TypeToken.ACCESS);
     }
 
-    public void isValidRefreshToken(String token) throws InvalidTokenException {
+    public void isValidRefreshToken(String token) throws ErrorException {
         isValidToken(token, TypeToken.REFRESH);
     }
 
-    private void isValidToken(String token, TypeToken typeToken) throws InvalidTokenException {
-        try {
-            isTypeTokenAccess(token, typeToken);
-        } catch (SignatureException e) {
-            throw new InvalidTokenException("Invalid JWT signature");
-        } catch (MalformedJwtException e) {
-            throw new InvalidTokenException("Invalid JWT token");
-        } catch (ExpiredJwtException e) {
-            throw new InvalidTokenException("JWT token is expired");
-        } catch (UnsupportedJwtException e) {
-            throw new InvalidTokenException("JWT token is unsupported");
-        } catch (IllegalArgumentException e) {
-            throw new InvalidTokenException("JWT claims string is empty");
-        } catch (IsInvalidTypeTokenException e) {
-            throw new InvalidTokenException(e.getMessage());
-        } catch (Exception e) {
-            throw new InvalidTokenException("JWT error");
+    private void isValidToken(String token, TypeToken typeToken) throws ErrorException {
+        final Claims claims = getAllClaimsFromToken(token);
+        final String type = claims.get(Constantes.JWT_TYPE_TOKEN, String.class);
+        if (StringUtils.isBlank(type) || !typeToken.name().equals(type)) {
+            throw new ErrorException(log, "JWT Token is of type " + (TypeToken.ACCESS.equals(typeToken) ? TypeToken.REFRESH.name() : TypeToken.ACCESS.name()));
         }
     }
 
-    private void isTypeTokenAccess(String token, TypeToken typeToken) throws IsInvalidTypeTokenException {
-        final Claims claims = getAllClaimsFromToken(token);
-        final String type = claims.get(TYPE_TOKEN, String.class);
-        if(StringUtils.isEmpty(type) || !typeToken.name().equals(type)) {
-            throw new IsInvalidTypeTokenException("JWT Token is of type " + (TypeToken.ACCESS.equals(typeToken) ? TypeToken.REFRESH.name() : TypeToken.ACCESS.name()));
+    public Claims getAllClaimsFromToken(String token) throws ErrorException {
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        } catch (SignatureException e) {
+            throw new ErrorException(log, "Invalid JWT signature", e);
+        } catch (MalformedJwtException e) {
+            throw new ErrorException(log, "Invalid JWT token", e);
+        } catch (ExpiredJwtException e) {
+            throw new ErrorException(log, "JWT token is expired", e);
+        } catch (UnsupportedJwtException e) {
+            throw new ErrorException(log, "JWT token is unsupported", e);
+        } catch (IllegalArgumentException e) {
+            throw new ErrorException(log, "JWT claims string is empty", e);
+        } catch (Exception e) {
+            throw new ErrorException(log, "JWT error", e);
         }
     }
 
     public String generate(UsuarioDTO usuarioDTO, TypeToken typeToken) {
         final Map<String, Object> claims = new HashMap<>();
-        claims.put(ID_USUARIO, usuarioDTO.getId());
-        claims.put(USERNAME, usuarioDTO.getUsername());
-        claims.put(ID_PERFIL, usuarioDTO.getPerfil().getId());
-        claims.put(TYPE_TOKEN, typeToken);
+        claims.put(Constantes.JWT_ID_USUARIO, usuarioDTO.getId());
+        claims.put(Constantes.JWT_USERNAME, usuarioDTO.getUsername());
+        claims.put(Constantes.JWT_ID_PERFIL, usuarioDTO.getPerfil().getId());
+        claims.put(Constantes.JWT_TYPE_TOKEN, typeToken);
         return doGenerateToken(claims, usuarioDTO.getUsername(), typeToken);
     }
 
     private String doGenerateToken(Map<String, Object> claims, String username, TypeToken typeToken) {
-        final Long expirationSeconds = Long.valueOf(TypeToken.ACCESS.equals(typeToken) ? expirationAccess : expirationRefresh);
-        final Long expirationTimeLong = expirationSeconds * 1000;
+        final long expirationSeconds = Long.parseLong(TypeToken.ACCESS.equals(typeToken) ? expirationAccess : expirationRefresh);
+        final long expirationTimeLong = expirationSeconds * 1000;
 
         final Date createdDate = new Date();
         final Date expirationDate = new Date(createdDate.getTime() + expirationTimeLong);

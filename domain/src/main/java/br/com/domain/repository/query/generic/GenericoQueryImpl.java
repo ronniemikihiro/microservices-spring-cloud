@@ -2,6 +2,8 @@ package br.com.domain.repository.query.generic;
 
 import br.com.domain.entity.Entidade;
 import br.com.domain.entity.dto.DTO;
+import br.com.domain.exception.errors.ErrorException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -11,25 +13,30 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Table;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+@Slf4j
 @SuppressWarnings("unchecked")
 public abstract class GenericoQueryImpl<D> implements GenericoQuery<D> {
 
     @Autowired
+    protected EntityManager entityManager;
+
+    @Autowired
     protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private Class<D> classDto;
-    private DTO dto;
+    private RowMapper<D> rowMapper;
     private Entidade entidade;
 
     protected GenericoQueryImpl() {
         try {
-            this.classDto = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            this.dto = (DTO) this.classDto.getConstructor().newInstance();
-            this.entidade = this.dto.getEntidade();
+            final Class<D> classDto = (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            final Object dto = classDto.getConstructor().newInstance();
+            this.entidade = ((DTO) dto).getEntidade();
+            this.rowMapper = ((DTO) dto).getRowMapper();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,8 +46,8 @@ public abstract class GenericoQueryImpl<D> implements GenericoQuery<D> {
         return this.entidade.getClass().getAnnotation(Table.class).name();
     }
 
-    protected DTO getDTO() {
-        return this.dto;
+    protected RowMapper<D> getRowMapper() {
+        return this.rowMapper;
     }
 
     protected String getConsulta(String alias) {
@@ -52,29 +59,27 @@ public abstract class GenericoQueryImpl<D> implements GenericoQuery<D> {
     }
 
     @Override
-    public D obterPorId(Long id) {
+    public D obterPorId(Long id) throws ErrorException {
         try {
-            final StringBuilder sql = new StringBuilder();
-            sql.append(getConsulta("e"));
-            sql.append(" FROM ").append(getTabela()).append(" e ");
-            sql.append(" WHERE e.ID = :id ");
-
+            final String sql = getConsulta("e") + " FROM " + getTabela() + " e WHERE e.ID = :id ";
             final MapSqlParameterSource params = new MapSqlParameterSource();
             params.addValue("id", id);
-
-            return (D) namedParameterJdbcTemplate.queryForObject(sql.toString(), params, this.dto.getRowMapper());
+            return namedParameterJdbcTemplate.queryForObject(sql, params, getRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
+        } catch (Exception e) {
+            throw new ErrorException(log, "Erro ao obter por id", e);
         }
     }
 
     @Override
-    public List<D> listarTodos() {
-        final StringBuilder sql = new StringBuilder();
-        sql.append(getConsulta("e"));
-        sql.append(" FROM ").append(getTabela()).append(" e ");
-
-        return namedParameterJdbcTemplate.query(sql.toString(), this.dto.getRowMapper());
+    public List<D> listarTodos() throws ErrorException {
+        try {
+            final String sql = getConsulta("e") + " FROM " + getTabela() + " e ";
+            return namedParameterJdbcTemplate.query(sql, getRowMapper());
+        } catch (Exception e) {
+            throw new ErrorException(log, "Erro ao listar todos", e);
+        }
     }
 
 //    protected Page<D> obterPaginado(String sql, String alias, MapSqlParameterSource params, RowMapper rowMapper, PropertiesDatatable propertiesDatatable) {

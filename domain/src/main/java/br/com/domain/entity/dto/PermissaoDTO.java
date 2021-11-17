@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 @Builder
-public class PermissaoDTO extends DTO<Permissao, PermissaoDTO> {
+public class PermissaoDTO extends DTO<Permissao> {
 
     private Long id;
     private String nome;

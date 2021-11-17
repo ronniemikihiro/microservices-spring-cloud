@@ -1,9 +1,10 @@
 package br.com.gateway.config;
 
-import br.com.gateway.exception.InvalidTokenException;
+import br.com.domain.exception.errors.ErrorException;
+import br.com.domain.util.Constantes;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -28,34 +29,32 @@ public class AuthenticationFilter implements GatewayFilter {
     private final RouterValidator routerValidator;
     private final JwtUtil jwtUtil;
 
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         final ServerHttpRequest request = exchange.getRequest();
 
         if (routerValidator.isSecured.test(request)) {
-            if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION))
-                return this.onError(exchange, "Authorization header is missing in request", HttpStatus.UNAUTHORIZED);
-
-            final String token = this.extractToken(request);
-
-            try {
-                jwtUtil.isValidAccessToken(token);
-            } catch (InvalidTokenException e) {
-                return this.onError(exchange, e.getMessage(), HttpStatus.UNAUTHORIZED);
+            if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                return this.onError(exchange, "Authorization header is missing in request");
             }
 
-            this.populateRequestWithHeaders(exchange, token);
+            try {
+                final String token = this.extractToken(request);
+                jwtUtil.isValidAccessToken(token);
+                this.populateRequestWithHeaders(exchange, token);
+            } catch (ErrorException e) {
+                return this.onError(exchange, e.getMessage());
+            }
         }
         return chain.filter(exchange);
     }
 
-    private Mono<Void> onError(ServerWebExchange exchange, String error, HttpStatus httpStatus) {
+    private Mono<Void> onError(ServerWebExchange exchange, String error) {
         final byte[] bytes = error.getBytes(StandardCharsets.UTF_8);
         final DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bytes);
 
         final ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(httpStatus);
+        response.setStatusCode(HttpStatus.UNAUTHORIZED);
         return response.writeWith(Flux.just(buffer));
     }
 
@@ -72,11 +71,12 @@ public class AuthenticationFilter implements GatewayFilter {
         return token;
     }
 
-    private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
+    private void populateRequestWithHeaders(ServerWebExchange exchange, String token) throws ErrorException {
         final Claims claims = jwtUtil.getAllClaimsFromToken(token);
+
         exchange.getRequest().mutate()
-                .header("id", String.valueOf(claims.get("id")))
-                .header("role", String.valueOf(claims.get("role")))
+                .header(Constantes.JWT_ID_USUARIO, String.valueOf(claims.get(Constantes.JWT_ID_USUARIO)))
+                .header(Constantes.JWT_USERNAME, String.valueOf(claims.get(Constantes.JWT_USERNAME)))
                 .build();
     }
 

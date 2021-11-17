@@ -1,5 +1,6 @@
 package br.com.api.user.data.controller;
 
+import br.com.commons.web.exception.ResponseException;
 import br.com.domain.enums.EnumTipoAutenticacao;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,8 +21,12 @@ public class TipoAutenticacaoController {
 
     @GetMapping
     @ApiOperation("Listar todos tipos de autenticação")
-    public ResponseEntity<EnumTipoAutenticacao[]> listar() {
-        return ResponseEntity.ok().body(EnumTipoAutenticacao.values());
+    public ResponseEntity<Object> listar() {
+        try {
+            return ResponseEntity.ok().body(EnumTipoAutenticacao.values());
+        } catch (Exception e) {
+            return ResponseException.exception(e);
+        }
     }
 
 }

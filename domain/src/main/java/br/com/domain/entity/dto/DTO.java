@@ -10,14 +10,15 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public abstract class DTO<T, D> {
+@SuppressWarnings("unchecked")
+public abstract class DTO<T> {
 
-    @JsonIgnore private Class<T> classEntity;
+    @JsonIgnore private final Class<T> classEntity;
 
     public abstract Long getId();
     public abstract void setId(Long id);
     public abstract T toEntidade();
-    @JsonIgnore public abstract RowMapper<D> getRowMapper();
+    @JsonIgnore public abstract RowMapper<? extends DTO> getRowMapper();
 
     protected DTO() {
         this.classEntity = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -33,7 +34,7 @@ public abstract class DTO<T, D> {
         return null;
     }
 
-    protected static DTO getDtoPorId(Long id, Class<?> clazz) {
+    protected DTO getDtoPorId(Long id, Class<?> clazz) {
         DTO dto = null;
 
         if(id != null) {

@@ -5,6 +5,7 @@ import br.com.domain.entity.dto.PerfilDTO;
 import br.com.domain.entity.dto.PermissaoDTO;
 import br.com.domain.entity.dto.UsuarioDTO;
 import br.com.domain.enums.EnumTipoAutenticacao;
+import br.com.domain.exception.errors.ErrorException;
 import br.com.domain.repository.EmpresaRepository;
 import br.com.domain.repository.PerfilRepository;
 import br.com.domain.repository.PermissaoRepository;
@@ -58,7 +59,7 @@ public class ApiUserApplication /*extends SpringBootServletInitializer*/ {
 		};
 	}
 
-	private void createPermissoes(PermissaoRepository permissaoRepository) {
+	private void createPermissoes(PermissaoRepository permissaoRepository) throws ErrorException {
 		PermissaoDTO permissaoDTO = permissaoRepository.obterPorId(1L);
 
 		if (permissaoDTO == null) {
@@ -96,7 +97,7 @@ public class ApiUserApplication /*extends SpringBootServletInitializer*/ {
 		}
 	}
 
-	private void createPerfis(PerfilRepository perfilRepository, PermissaoRepository permissaoRepository) {
+	private void createPerfis(PerfilRepository perfilRepository, PermissaoRepository permissaoRepository) throws ErrorException {
 		PerfilDTO perfilDTO = perfilRepository.obterPorId(1L);
 
 		if (perfilDTO == null) {
@@ -120,7 +121,7 @@ public class ApiUserApplication /*extends SpringBootServletInitializer*/ {
 		}
 	}
 
-	private void createEmpresas(EmpresaRepository empresaRepository) {
+	private void createEmpresas(EmpresaRepository empresaRepository) throws ErrorException {
 		EmpresaDTO empresaDTO = empresaRepository.obterPorId(1L);
 
 		if (empresaDTO == null) {
@@ -150,7 +151,7 @@ public class ApiUserApplication /*extends SpringBootServletInitializer*/ {
 		}
 	}
 
-	private void createUsuarios(UsuarioRepository usuarioRepository, EmpresaRepository empresaRepository, PerfilRepository perfilRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+	private void createUsuarios(UsuarioRepository usuarioRepository, EmpresaRepository empresaRepository, PerfilRepository perfilRepository, BCryptPasswordEncoder bCryptPasswordEncoder) throws ErrorException {
 		UsuarioDTO usuarioDTO = usuarioRepository.obterPorId(1L);
 
 		if (usuarioDTO == null) {
