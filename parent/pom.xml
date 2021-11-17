@@ -98,19 +98,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>repo-snapshots</name>
-            <url>http://nexus.esales.com.br:8080/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>releases</id>
-            <name>repo-releases</name>
-            <url>http://nexus.esales.com.br:8080/nexus/content/repositories/releases/</url>
-        </repository>
-    </distributionManagement>
-
     <build>
         <pluginManagement>
             <plugins>
